@@ -1,0 +1,101 @@
+JSON Web Token is a standard used to create access tokens for an application
+This access token can also be called as JWT Token.
+
+----------------------------------------------------------------------------------------
+3.1 How JWT works?
+Client: Login with username and password
+Server: Returns a JWT Token
+Client: Sends JWT Token while requesting
+Server: Sends Response to the client
+---------------------------------------------------------------------------------------
+jsonwebtoken package provides jwt.sign and jwt.verify functions
+----------------------------------------------------------------------------
+How Token Authentication works?
+Server generates token and certifies the client
+Client uses this token on every subsequent request
+Client don’t need to provide entire details every time
+
+
+------------------------------------------------------------------------------
+5. How to pass JWT Token?
+We have to add an authorization header to our request and the JWT Token is passed as a Bearer token
+
+GET http://localhost:3000/books?offset=2&limit=3&search_q=the&order_by=price&order=DESC
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoicmFodWwiLCJnZW5kZXIiOiJNYWxlIiwibG9jYXRpb24iOiJoeWRlcmFiYWQiLCJpYXQiOjE2MTc0MzI0MDd9.Eqevw5QE70ZAVrmOZUc6pflUbeI0ffZUmQLDHYplU8g
+
+{
+  "username": "sairram",
+  "password": "sairram123"
+ 
+}
+------------------------------------------------------------------------------------------
+
+Status Codes	Status Text ID
+    200	                OK
+    204            	No Response
+    301	            Moved Permanently
+    400         	Bad Request
+    403         	Forbidden
+    401         	Unauthorized
+---------------------------------------------------------------
+
+regeister API 
+
+{
+  "name" : "sairram",
+  "username": "sairram123",
+  "password": "sairram@234",
+  "gender": "male",
+  "location": "hyderabad"
+}
+--------------------------------------------------------------
+
+1. Middleware functions
+Middleware is a special kind of function in Express JS which accepts the request from
+
+the user (or)
+the previous middleware
+After processing the request the middleware function
+
+sends the response to another middleware (or)
+calls the API Handler (or)
+sends response to the user
+----------------------------------------------------------------------
+
+app.method(Path, middleware1, handler);
+
+----------------------------------------------------------------------
+ Defining a Middleware Function:
+
+ const middlewareFunction = (request, response, next) => {};
+
+ --------------------------------------------------------------------
+
+  Logger Middleware Function:
+
+  const logger = (request, response, next) => {
+  console.log(request.query);
+  next();
+};
+
+The next parameter is a function passed by Express JS which, when invoked, executes the next succeeding function
+---------------------------------------------------------------------
+
+ Get Books API with Logger Middleware:
+
+ app.get("/books/", logger, async (request, response) => {
+  const getBooksQuery = `
+   SELECT
+    *
+   FROM
+    book
+   ORDER BY
+    book_id;`;
+  const booksArray = await db.all(getBooksQuery);
+  response.send(booksArray);
+});
+
+---------------------------------------------------------------------
+
+
+
